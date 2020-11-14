@@ -6,23 +6,23 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import com.br.myfood.pedido.dto.ClientOrderDto;
-import com.br.myfood.pedido.entity.Client;
-import com.br.myfood.pedido.repository.ClientRepository;
+import com.br.myfood.pedido.entity.ClientOrder;
+import com.br.myfood.pedido.repository.ClientOrderRepository;
 
 @Component
 public class ClientReceiveMessage {
 
-    private final ClientRepository clientRepository;
+    private final ClientOrderRepository clientOrderRepository;
 
     @Autowired
-    public ClientReceiveMessage(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
+    public ClientReceiveMessage(ClientOrderRepository clientOrderRepository) {
+        this.clientOrderRepository = clientOrderRepository;
     }
 
     @RabbitListener(queues = {"${cadastro.client.rabbitmq.queue}"})
     public void receive(@Payload ClientOrderDto clientOrderDto) {
         System.out.println(clientOrderDto);
-        clientRepository.save(Client.create(clientOrderDto));
+        clientOrderRepository.save(new ClientOrder(null, clientOrderDto.getIdClient()));
     }
 
 }
