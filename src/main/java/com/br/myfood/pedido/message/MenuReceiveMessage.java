@@ -19,7 +19,7 @@ public class MenuReceiveMessage {
         this.menuOrderRepository = menuOrderRepository;
     }
 
-    @RabbitListener(queues = {"${cadastro.menu.queue}"})
+    @RabbitListener(queues = {"${cadastro.menu.rabbitmq.queue}"})
     public void receive(@Payload MenuOrderDto menuOrderDto) {
         System.out.println(menuOrderDto);
         this.menuOrderRepository.save(new MenuOrder(null, menuOrderDto.getIdMenu(), menuOrderDto.getIdRestaurant()));
